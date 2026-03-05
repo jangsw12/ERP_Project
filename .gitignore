@@ -39,3 +39,11 @@ TestResults/
 # Resharper
 _ReSharper*/
 *.DotSettings.user
+
+# Ignore App.config
+App.config
+
+# Ignore user settings
+Properties/Settings.settings
+Properties/Settings.Designer.cs
+
