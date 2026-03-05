@@ -1,0 +1,61 @@
+﻿<Window x:Class="ERP_Project.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ERP_Project.Views"
+        xmlns:view="clr-namespace:ERP_Project.Views"
+        xmlns:vm="clr-namespace:ERP_Project.ViewModels"
+        xmlns:control="clr-namespace:ERP_Project.Controls"
+        mc:Ignorable="d"
+        Title="ERP System" Height="900" Width="1400">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+            <view:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ItemViewModel}">
+            <view:ItemView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CustomerViewModel}">
+            <view:CustomerView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:WarehouseViewModel}">
+            <view:WarehouseView/>
+        </DataTemplate>      
+        <DataTemplate DataType="{x:Type vm:BOMViewModel}">
+            <view:BOMView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PurchaseOrderViewModel}">
+            <view:PurchaseOrderView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SalesOrderViewModel}">
+            <view:SalesOrderView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProductionOrderViewModel}">
+            <view:ProductionOrderView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+            <view:DashboardView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ChangePasswordViewModel}">
+            <view:ChangePasswordView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:InventoryViewModel}">
+            <view:InventoryView/>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <control:TopBarControl Grid.Row="0"
+                               DataContext="{Binding}"/>
+
+        <ContentControl Grid.Row="1"
+                        Content="{Binding CurrentViewModel}"/>
+    </Grid>
+</Window>
