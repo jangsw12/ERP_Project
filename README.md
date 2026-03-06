@@ -59,4 +59,4 @@
   
     Inventory			- 재고 테이블
   
-![ERD.png](Images\ERD.png)
+![ERD](Images/ERD.png)
