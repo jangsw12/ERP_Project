@@ -47,3 +47,5 @@ App.config
 Properties/Settings.settings
 Properties/Settings.Designer.cs
 
+echo "ERP_Project.git/" >> .gitignore
+echo "ERP_Project.git.bfg-report/" >> .gitignore
