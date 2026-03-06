@@ -59,4 +59,4 @@
   
     Inventory			- 재고 테이블
   
-![image.png](attachment:3b6d168a-66df-424a-a93f-c4e512d1b4ed:image.png)
+![ERD.png](C:\Users\장성우\Documents\포트폴리오\ERP_Project\ERP_Project\Images\ERD.png)
