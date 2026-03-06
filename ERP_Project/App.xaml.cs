@@ -13,7 +13,6 @@ using ERP_Project.Stores;
 using ERP_Project.ViewModels;
 using ERP_Project.Views;
 using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
 using System.Data;
 using System.Windows;
 
