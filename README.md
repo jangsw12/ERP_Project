@@ -67,9 +67,6 @@
 ---
 
 ## 🎯 **시연 영상**
-<p align="center">
-    <img src="ERP_Project/Assets/ItemAnim.gif" width="100%"/>
-</p>
 
 ![Demo GIF](ERP_Project/Assets/ItemAnim.gif)
 
