@@ -58,6 +58,8 @@
     BOM				- BOM 테이블
   
     Inventory			- 재고 테이블
+
+    CurrentStock        - 현재고 테이블
   
 ![ERD](ERP_Project/Images/ERD1.png)
 ![ERD](ERP_Project/Images/ERD2.png)
