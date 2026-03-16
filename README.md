@@ -73,8 +73,4 @@
 
 ![Demo GIF](ERP_Project/Assets/PurchaseAnim.gif)
 
-<p align="center">
-  <img src="ERP_Project/Assets/PurchaseAnim.gif" width="100%" />
-</p>
-
 
