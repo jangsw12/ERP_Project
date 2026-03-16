@@ -1,5 +1,4 @@
 ﻿using ERP_Project.Infrastructure.Db;
-using ERP_Project.Models.Master;
 using ERP_Project.Models.Purchasing;
 using ERP_Project.Stores;
 using System;
@@ -9,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ERP_Project.Services.PurchaseOrders
 {
