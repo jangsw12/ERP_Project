@@ -22,7 +22,7 @@ namespace ERP_Project.Services.Navigation
             _serviceProvider = serviceProvider;
         }
 
-        public void Navigate(NaviType naviType)
+        public void Navigate(NaviType naviType, object? parameter = null)
         {
             ViewModelBase viewModel = naviType switch
             {
@@ -48,9 +48,23 @@ namespace ERP_Project.Services.Navigation
                     _serviceProvider.GetRequiredService<ChangePasswordViewModel>(),
                 NaviType.InventoryView =>
                     _serviceProvider.GetRequiredService<InventoryViewModel>(),
-
+                NaviType.CurrentStockView =>
+                    _serviceProvider.GetRequiredService<CurrentStockViewModel>(),
+                NaviType.InventoryAddView =>
+                    _serviceProvider.GetRequiredService<InventoryAddViewModel>(),
+                NaviType.PurchaseOrderAddView =>
+                    _serviceProvider.GetRequiredService<PurchaseOrderAddViewModel>(),
+                NaviType.PurchaseOrderDetailView =>
+                    _serviceProvider.GetRequiredService<PurchaseOrderDetailViewModel>(),
+                   
                 _ => throw new ArgumentOutOfRangeException()
             };
+
+            // Detail 화면이면 parameter (MasterId) 전달
+            if (viewModel is PurchaseOrderDetailViewModel detailVm && parameter is int masterId)
+            {
+                _ = detailVm.LoadDetailAsync(masterId);
+            }
 
             _mainNavigationStore.CurrentViewModel = viewModel;
         }

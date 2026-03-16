@@ -13,6 +13,8 @@ namespace ERP_Project.Models.Purchasing
         public string PurchaseNumber { get; set; } = string.Empty;
         public string SupplierName { get; set; } = string.Empty;
         public int SupplierId { get; set; }
+        public int WarehouseId { get; set; }
+        public string WarehouseName { get; set; } = string.Empty;
         public int ItemId { get; set; }
         public string ItemCode { get; set; } = string.Empty;
         public string ItemName { get; set; } = string.Empty;

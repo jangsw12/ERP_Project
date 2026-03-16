@@ -13,7 +13,7 @@ namespace ERP_Project.Models.Inventory
         public int WarehouseId { get; set; }
         public string TranType { get; set; } = string.Empty;
         public string? RefType { get; set; }
-        public int? RefId { get; set; }
+        public string RefNo { get; set; } = string.Empty;
         public decimal Qty { get; set; }
         public decimal? UnitCost { get; set; }
         public DateTime TranDate { get; set; }
@@ -21,5 +21,6 @@ namespace ERP_Project.Models.Inventory
         public DateTime CreatedAt { get; set; }
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedAt { get; set; }
+        public string? TranRemark { get; set; }
     }
 }

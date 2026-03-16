@@ -71,6 +71,12 @@
                         Margin="5 0"
                         Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}"
                         Command="{Binding ShowInventoryCommand}"/>
+
+                <Button Content="현재고조회"
+                        Width="100" Height="36"
+                        Margin="5 0"
+                        Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Command="{Binding ShowCurrentStockCommand}"/>
             </StackPanel>
 
             <!--우측 검색 + 사용자-->

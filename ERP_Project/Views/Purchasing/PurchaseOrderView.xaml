@@ -45,6 +45,16 @@
                           DisplayMemberPath="CustomerName"
                           SelectedValue="{Binding SearchSupplierId}"/>
 
+                <TextBlock Text="창고"
+                           VerticalAlignment="Center"
+                           Margin="0 0 5 0"/>
+                <ComboBox Width="150"
+                          Margin="0 0 15 0"
+                          ItemsSource="{Binding WarehousesLookup}"
+                          SelectedValuePath="WarehouseId"
+                          DisplayMemberPath="WarehouseName"
+                          SelectedValue="{Binding SearchWarehouseId}"/>
+
                 <TextBlock Text="발주번호"
                            VerticalAlignment="Center"
                            Margin="0 0 5 0"/>
@@ -75,6 +85,10 @@
                 <Button Content="조회"
                         Width="80"
                         Command="{Binding SearchCommand}"/>
+                <Button Content="발주 등록"
+                        Width="80"
+                        Margin="5 0"
+                        Command="{Binding AddCommand}"/>
             </WrapPanel>
         </Border>
 
@@ -87,7 +101,8 @@
                   CanUserAddRows="False"
                   IsReadOnly="True"
                   SelectionMode="Single"
-                  RowHeaderWidth="20">
+                  RowHeaderWidth="20"
+                  MouseDoubleClick="PurchaseOrderGrid_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="발주번호"
                                     Binding="{Binding PurchaseNumber}"

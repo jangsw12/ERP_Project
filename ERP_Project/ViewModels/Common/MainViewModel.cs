@@ -27,6 +27,7 @@ namespace ERP_Project.ViewModels
         public ICommand ShowProductionCommand { get; }
         public ICommand ShowSalesCommand { get; }
         public ICommand ShowInventoryCommand { get; }
+        public ICommand ShowCurrentStockCommand { get; }
 
         public MainViewModel(MainNavigationStore mainNavigationStore, INavigationService navigationService, UserSessionStore userSessionStore)
         {
@@ -52,6 +53,7 @@ namespace ERP_Project.ViewModels
             ShowProductionCommand = new RelayCommand<object>(_ => _navigationService.Navigate(NaviType.ProductionOrderView));
             ShowSalesCommand = new RelayCommand<object>(_ => _navigationService.Navigate(NaviType.SalesOrderView));
             ShowInventoryCommand = new RelayCommand<object>(_ => _navigationService.Navigate(NaviType.InventoryView));
+            ShowCurrentStockCommand = new RelayCommand<object>(_ => _navigationService.Navigate(NaviType.CurrentStockView));
         }
     }
 }

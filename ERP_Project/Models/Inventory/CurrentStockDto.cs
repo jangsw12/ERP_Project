@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace ERP_Project.Models.Inventory
 {
-    public class InventoryDto : Inventory
+    public class CurrentStockDto : CurrentStock
     {
         public string ItemCode { get; set; } = string.Empty;
         public string ItemName { get; set; } = string.Empty;
         public string WarehouseName { get; set; } = string.Empty;
-        public string UserName { get; set; } = string.Empty;
     }
 }

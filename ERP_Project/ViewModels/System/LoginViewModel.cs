@@ -96,7 +96,7 @@ namespace ERP_Project.ViewModels
                     }
 
                     // 정상 로그인
-                    _navigationService.Navigate(NaviType.DashboardView);
+                    _navigationService.Navigate(NaviType.CurrentStockView);
                 }
                 else
                 {

@@ -197,17 +197,5 @@ namespace ERP_Project.ViewModels
             PageNumber--;
             await Search();
         }
-
-        private void Validate(Customer customer)
-        {
-            if (string.IsNullOrWhiteSpace(customer.BusinessNumber))
-                throw new Exception("거래처코드는 필수입니다.");
-
-            if (string.IsNullOrWhiteSpace(customer.CustomerName))
-                throw new Exception("거래처명은 필수입니다.");
-
-            if (string.IsNullOrWhiteSpace(customer.CustomerType))
-                throw new Exception("유형은 필수입니다.");
-        }
     }
 }

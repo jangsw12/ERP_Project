@@ -5,7 +5,6 @@ using ERP_Project.Services.Inventorys;
 using ERP_Project.Services.Items;
 using ERP_Project.Services.Navigation;
 using ERP_Project.Services.Warehouses;
-using ERP_Project.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -183,6 +182,7 @@ namespace ERP_Project.ViewModels
 
         // Commands
         public ICommand SearchCommand { get; }
+        public ICommand AddCommand { get; }
         public ICommand NextPageCommand { get; }
         public ICommand PrevPageCommand { get; }
         public ICommand GoWarehouseCommand { get; }
@@ -197,8 +197,8 @@ namespace ERP_Project.ViewModels
             Inventories = new ObservableCollection<InventoryDto>();
             ItemsLookup = new ObservableCollection<Item>();
             WarehousesLookup = new ObservableCollection<Warehouse>();
-            TranTypes = new ObservableCollection<string> { "", "In", "Out", "ProductionIn", "ProductionOut" };
-            RefTypes = new ObservableCollection<string> { "", "Purchase", "Sales", "Production" };
+            TranTypes = new ObservableCollection<string> { "", "IN", "OUT", "PROD_IN", "PROD_OUT" };
+            RefTypes = new ObservableCollection<string> { "", "PO", "SO", "PR" };
 
             // 날짜 기본값 설정
             var today = DateTime.Today;
@@ -206,6 +206,7 @@ namespace ERP_Project.ViewModels
             SearchDateTo = SearchDateFrom.Value.AddMonths(1).AddDays(-1);
 
             SearchCommand = new RelayCommand<object>(async _ => await Search());
+            AddCommand = new RelayCommand<object>(Add);
             NextPageCommand = new RelayCommand<object>(async _ => await NextPage(), _ => PageNumber < TotalPages);
             PrevPageCommand = new RelayCommand<object>(async _ => await PrevPage(), _ => PageNumber > 1);
             GoWarehouseCommand = new RelayCommand<object>(GoWarehouse);
@@ -261,6 +262,11 @@ namespace ERP_Project.ViewModels
                 await Search();
                 return;
             }
+        }
+
+        private void Add(object _)
+        {
+            _navigationService.Navigate(NaviType.InventoryAddView);
         }
 
         private async Task NextPage()

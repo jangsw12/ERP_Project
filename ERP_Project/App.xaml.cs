@@ -40,7 +40,6 @@ namespace ERP_Project
 
         public new static App Current => (App)Application.Current;
 
-
         private static IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
@@ -60,6 +59,7 @@ namespace ERP_Project
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IWarehouseService, WarehouseService>();
             services.AddSingleton<IBOMService, BOMService>();
+            services.AddSingleton<ICurrentStockService, CurrentStockService>();
 
             // Stores
             services.AddSingleton<MainNavigationStore>();
@@ -78,6 +78,10 @@ namespace ERP_Project
             services.AddTransient<SalesOrderViewModel>();
             services.AddTransient<InventoryViewModel>();
             services.AddTransient<ChangePasswordViewModel>();
+            services.AddTransient<CurrentStockViewModel>();
+            services.AddTransient<InventoryAddViewModel>();
+            services.AddTransient<PurchaseOrderAddViewModel>();
+            services.AddTransient<PurchaseOrderDetailViewModel>();
 
             // Views
             services.AddSingleton(s => new MainView()

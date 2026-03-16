@@ -18,6 +18,10 @@ namespace ERP_Project.Services.Navigation
         ProductionOrderView,
         DashboardView,
         ChangePasswordView,
-        InventoryView
+        InventoryView,
+        CurrentStockView,
+        InventoryAddView,
+        PurchaseOrderAddView,
+        PurchaseOrderDetailView
     }
 }

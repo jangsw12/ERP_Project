@@ -8,6 +8,6 @@ namespace ERP_Project.Services.Navigation
 {
     public interface INavigationService
     {
-        void Navigate(NaviType naviType);
+        void Navigate(NaviType naviType, object? parameter = null);
     }
 }

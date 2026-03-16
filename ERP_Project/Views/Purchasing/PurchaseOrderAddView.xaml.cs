@@ -1,5 +1,4 @@
-﻿using ERP_Project.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,21 +16,19 @@ using System.Windows.Shapes;
 namespace ERP_Project.Views
 {
     /// <summary>
-    /// PurchaseOrderView.xaml에 대한 상호 작용 논리
+    /// PurchaseOrderAddView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class PurchaseOrderView : UserControl
+    public partial class PurchaseOrderAddView : UserControl
     {
-        public PurchaseOrderView()
+        public PurchaseOrderAddView()
         {
             InitializeComponent();
         }
 
-        private void PurchaseOrderGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is PurchaseOrderViewModel vm && vm.SelectedPurchaseOrder != null)
-            {
-                vm.OpenDetailCommand.Execute(vm.SelectedPurchaseOrder);
-            }
+            dataGrid.CommitEdit(DataGridEditingUnit.Cell, true);
+            dataGrid.CommitEdit(DataGridEditingUnit.Row, true);
         }
     }
 }

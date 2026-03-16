@@ -44,6 +44,18 @@
         <DataTemplate DataType="{x:Type vm:InventoryViewModel}">
             <view:InventoryView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CurrentStockViewModel}">
+            <view:CurrentStockView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:InventoryAddViewModel}">
+            <view:InventoryAddView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PurchaseOrderAddViewModel}">
+            <view:PurchaseOrderAddView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PurchaseOrderDetailViewModel}">
+            <view:PurchaseOrderDetailView/>
+        </DataTemplate>
     </Window.Resources>
     
     <Grid>

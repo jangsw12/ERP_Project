@@ -1,10 +1,9 @@
 ﻿using ERP_Project.Commands;
+using ERP_Project.Models.Inventory;
 using ERP_Project.Models.Master;
-using ERP_Project.Models.Purchasing;
-using ERP_Project.Services.Customers;
+using ERP_Project.Services.Inventorys;
 using ERP_Project.Services.Items;
 using ERP_Project.Services.Navigation;
-using ERP_Project.Services.PurchaseOrders;
 using ERP_Project.Services.Warehouses;
 using System;
 using System.Collections.Generic;
@@ -16,23 +15,22 @@ using System.Windows.Input;
 
 namespace ERP_Project.ViewModels
 {
-    public class PurchaseOrderViewModel : ViewModelBase
+    public class CurrentStockViewModel : ViewModelBase
     {
-        private readonly IPurchaseOrderService _purchaseOrderService;
+        private readonly ICurrentStockService _currentStockService;
         private readonly IItemService _itemService;
-        private readonly ICustomerService _customerService;
         private readonly IWarehouseService _warehouseService;
         private readonly INavigationService _navigationService;
 
-        public ObservableCollection<PurchaseOrderDto> PurchaseOrders { get; set; }
-        private PurchaseOrderDto _selectedPurchaseOrder;
+        public ObservableCollection<CurrentStockDto> CurrentStocks { get; set; }
+        private CurrentStockDto _selectedCurrentStock;
 
-        public PurchaseOrderDto SelectedPurchaseOrder
+        public CurrentStockDto SelectedCurrentStock
         {
-            get { return _selectedPurchaseOrder; }
+            get { return _selectedCurrentStock; }
             set
             {
-                _selectedPurchaseOrder = value;
+                _selectedCurrentStock = value;
                 OnPropertyChanged();
             }
         }
@@ -45,18 +43,6 @@ namespace ERP_Project.ViewModels
             set
             {
                 _itemsLookup = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ObservableCollection<Customer> _suppliersLookup;
-
-        public ObservableCollection<Customer> SuppliersLookup
-        {
-            get { return _suppliersLookup; }
-            set
-            {
-                _suppliersLookup = value;
                 OnPropertyChanged();
             }
         }
@@ -86,18 +72,6 @@ namespace ERP_Project.ViewModels
             }
         }
 
-        private int? _searchSupplierId;
-
-        public int? SearchSupplierId
-        {
-            get { return _searchSupplierId; }
-            set
-            {
-                _searchSupplierId = value;
-                OnPropertyChanged();
-            }
-        }
-
         private int? _searchWarehouseId;
 
         public int? SearchWarehouseId
@@ -105,42 +79,7 @@ namespace ERP_Project.ViewModels
             get { return _searchWarehouseId; }
             set
             {
-                _searchWarehouseId = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _searchPurchaseNumber;
-
-        public string SearchPurchaseNumber
-        {
-            get { return _searchPurchaseNumber; }
-            set { 
-                _searchPurchaseNumber = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private DateTime? _searchDateFrom;
-
-        public DateTime? SearchDateFrom
-        {
-            get { return _searchDateFrom; }
-            set
-            {
-                _searchDateFrom = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private DateTime? _searchDateTo;
-
-        public DateTime? SearchDateTo
-        {
-            get { return _searchDateTo; }
-            set
-            {
-                _searchDateTo = value;
+                _searchWarehouseId = value == 0 ? null : value;
                 OnPropertyChanged();
             }
         }
@@ -196,40 +135,23 @@ namespace ERP_Project.ViewModels
         public ICommand SearchCommand { get; }
         public ICommand NextPageCommand { get; }
         public ICommand PrevPageCommand { get; }
-        public ICommand GoCustomerCommand { get; }
-        public ICommand AddCommand { get; }
-        public ICommand OpenDetailCommand { get; }
+        public ICommand GoWarehouseCommand { get; }
 
-        public PurchaseOrderViewModel(IPurchaseOrderService purchaseOrderService, IItemService itemService, ICustomerService customerService, IWarehouseService warehouseService, INavigationService navigationService)
+        public CurrentStockViewModel(ICurrentStockService CurrentStockService, IItemService itemService, IWarehouseService warehouseService, INavigationService navigationService)
         {
-            _purchaseOrderService = purchaseOrderService;
+            _currentStockService = CurrentStockService;
             _itemService = itemService;
-            _customerService = customerService;
             _warehouseService = warehouseService;
             _navigationService = navigationService;
 
-            PurchaseOrders = new ObservableCollection<PurchaseOrderDto>();
+            CurrentStocks = new ObservableCollection<CurrentStockDto>();
             ItemsLookup = new ObservableCollection<Item>();
-            SuppliersLookup = new ObservableCollection<Customer>();
             WarehousesLookup = new ObservableCollection<Warehouse>();
-
-            // 날짜 기본값 설정
-            var today = DateTime.Today;
-            SearchDateFrom = new DateTime(today.Year, today.Month, 1);
-            SearchDateTo = SearchDateFrom.Value.AddMonths(1).AddDays(-1);
-
+           
             SearchCommand = new RelayCommand<object>(async _ => await Search());
             NextPageCommand = new RelayCommand<object>(async _ => await NextPage(), _ => PageNumber < TotalPages);
             PrevPageCommand = new RelayCommand<object>(async _ => await PrevPage(), _ => PageNumber > 1);
-            GoCustomerCommand = new RelayCommand<object>(GoCustomer);
-            AddCommand = new RelayCommand<object>(Add);
-            OpenDetailCommand = new RelayCommand<PurchaseOrderDto>(po =>
-            {
-                if (po != null)
-                {
-                    _navigationService.Navigate(NaviType.PurchaseOrderDetailView, po.PurchaseOrderMId);
-                }
-            });
+            GoWarehouseCommand = new RelayCommand<object>(GoWarehouse);
 
             _ = LoadLookupData();
             _ = Search();
@@ -251,19 +173,6 @@ namespace ERP_Project.ViewModels
             foreach (var item in items)
                 ItemsLookup.Add(item);
 
-            // Customer Lookup
-            var customers = await _customerService.GetLookupAsync();
-
-            SuppliersLookup.Clear();
-            SuppliersLookup.Add(new Customer
-            {
-                CustomerId = 0,
-                CustomerName = null
-            });
-
-            foreach (var customer in customers)
-                SuppliersLookup.Add(customer);
-
             // Warehouse Lookup
             var warehouses = await _warehouseService.GetLookupAsync();
 
@@ -280,12 +189,12 @@ namespace ERP_Project.ViewModels
 
         private async Task Search()
         {
-            var result = await _purchaseOrderService.SearchAsync(SearchItemId == 0 ? null : SearchItemId, SearchSupplierId == 0 ? null : SearchSupplierId, SearchWarehouseId == 0 ? null : SearchWarehouseId, SearchPurchaseNumber, SearchDateFrom, SearchDateTo, PageNumber, PageSize);
+            var result = await _currentStockService.SearchAsync(SearchItemId == 0 ? null : SearchItemId, SearchWarehouseId, PageNumber, PageSize);
 
-            PurchaseOrders.Clear();
+            CurrentStocks.Clear();
 
-            foreach (var pur in result.PurchaseOrders)
-                PurchaseOrders.Add(pur);
+            foreach (var cnt in result.CurrentStocks)
+                CurrentStocks.Add(cnt);
 
             TotalCount = result.TotalCount;
 
@@ -315,14 +224,9 @@ namespace ERP_Project.ViewModels
             await Search();
         }
 
-        private void GoCustomer(object _)
+        private void GoWarehouse(object _)
         {
-            _navigationService.Navigate(NaviType.CustomerView);
-        }
-
-        private void Add(object _)
-        {
-            _navigationService.Navigate(NaviType.PurchaseOrderAddView);
+            _navigationService.Navigate(NaviType.WarehouseView);
         }
     }
 }
