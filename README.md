@@ -63,3 +63,13 @@
   
 ![ERD](ERP_Project/Images/ERD1.png)
 ![ERD](ERP_Project/Images/ERD2.png)
+
+---
+
+## 🎯 **시연 영상**
+![Demo GIF](ERP_Project/Assets/ItemAnim.mp4)
+
+
+![Demo GIF](ERP_Project/Assets/PurchaseAnim.mp4)
+
+
