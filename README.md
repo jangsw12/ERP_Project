@@ -67,9 +67,13 @@
 ---
 
 ## 🎯 **시연 영상**
-![Demo GIF](ERP_Project/Assets/ItemAnim.mp4)
+<p align="center">
+    <img src="ERP_Project/Assets/ItemAnim.gif" width="100%"/>
+</p>
+
+![Demo GIF](ERP_Project/Assets/ItemAnim.gif)
 
 
-![Demo GIF](ERP_Project/Assets/PurchaseAnim.mp4)
+![Demo GIF](ERP_Project/Assets/PurchaseAnim.gif)
 
 
