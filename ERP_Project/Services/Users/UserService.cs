@@ -36,16 +36,17 @@ namespace ERP_Project.Services.Users
                 reader => new AppUser
                 {
                     UserId = Convert.ToInt32(reader["UserId"]),
-                    LoginId = reader["LoginId"].ToString(),
-                    UserName = reader["UserName"].ToString(),
-                    Role = reader["Role"].ToString()
+                    LoginId = reader["LoginId"]?.ToString() ?? string.Empty,
+                    UserName = reader["UserName"]?.ToString() ?? string.Empty,
+                    Role = reader["Role"]?.ToString() ?? string.Empty,
+                    MustChangePassword = Convert.ToBoolean(reader["MustChangePassword"])
                 }
             );
 
             return users.FirstOrDefault();
         }
 
-        public async Task<bool> ChangePasswordAsync(int userId, string currentPassword, string newPassword)
+        public async Task<string> ChangePasswordAsync(int userId, string currentPassword, string newPassword)
         {
             var result = await _dbExecutor.ExecuteProcedureAsync("AppUser_S", cmd =>
             {
@@ -58,7 +59,7 @@ namespace ERP_Project.Services.Users
                 cmd.Parameters.Add("@p_error_str", SqlDbType.NVarChar, 1000).Direction = ParameterDirection.Output;
             });
 
-            return result["@p_error_code"]?.ToString() == "SUCCESS";
+            return result["@p_error_code"]?.ToString() ?? "ERROR";
         }
     }
 }

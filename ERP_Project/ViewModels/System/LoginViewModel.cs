@@ -2,7 +2,6 @@
 using ERP_Project.Services.Navigation;
 using ERP_Project.Services.Users;
 using ERP_Project.Stores;
-using ERP_Project.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,7 +64,6 @@ namespace ERP_Project.ViewModels
             _userService = userService;
 
             LoginCommand = new RelayCommand<object>(async _ => await Login());
-            NavigateChangePasswordCommand = new RelayCommand<object>(_ => _navigationService.Navigate(NaviType.ChangePasswordView));
         }
 
         private async Task Login()
@@ -89,8 +87,9 @@ namespace ERP_Project.ViewModels
                     _userSessionStore.Login();
 
                     // 임시 비밀번호 강제 변경
-                    if (Password == "0000")
+                    if (user.MustChangePassword)
                     {
+                        StatusMessage = "초기 비밀번호입니다. 비밀번호를 변경해주세요.";
                         _navigationService.Navigate(NaviType.ChangePasswordView);
                         return;
                     }

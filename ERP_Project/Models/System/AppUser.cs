@@ -15,5 +15,6 @@ namespace ERP_Project.Models.System
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public string UserName { get; set; } = string.Empty;
+        public bool MustChangePassword { get; set; }
     }
 }

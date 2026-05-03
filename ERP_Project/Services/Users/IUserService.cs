@@ -10,6 +10,6 @@ namespace ERP_Project.Services.Users
     public interface IUserService
     {
         Task<AppUser?> LoginAsync(string loginId, string password);
-        Task<bool> ChangePasswordAsync(int userId, string currentPassword, string newPassword);
+        Task<string> ChangePasswordAsync(int userId, string currentPassword, string newPassword);
     }
 }

@@ -2,7 +2,6 @@
 using ERP_Project.Services.Navigation;
 using ERP_Project.Services.Users;
 using ERP_Project.Stores;
-using ERP_Project.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +17,8 @@ namespace ERP_Project.ViewModels
         private readonly UserSessionStore _userSessionStore;
         private readonly INavigationService _navigationService;
 
+        public bool IsForceChange { get; set; } = true;        // 로그인 직후 true
+
         private string _currentPassword = string.Empty;
         public string CurrentPassword
         {
@@ -26,6 +27,7 @@ namespace ERP_Project.ViewModels
             {
                 _currentPassword = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(CanChangePassword));
             }
         }
 
@@ -37,6 +39,7 @@ namespace ERP_Project.ViewModels
             {
                 _newPassword = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(CanChangePassword));
             }
         }
 
@@ -48,6 +51,7 @@ namespace ERP_Project.ViewModels
             {
                 _confirmPassword = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(CanChangePassword));
             }
         }
 
@@ -62,31 +66,26 @@ namespace ERP_Project.ViewModels
             }
         }
 
+        public bool CanChangePassword => !string.IsNullOrWhiteSpace(CurrentPassword)
+                                       && !string.IsNullOrWhiteSpace(NewPassword)
+                                       && !string.IsNullOrWhiteSpace(ConfirmPassword);
+        
         public ICommand ChangePasswordCommand { get; }
+        public ICommand CancelCommand { get; }
 
-        public ChangePasswordViewModel(
-            IUserService userService,
-            UserSessionStore userSessionStore,
-            INavigationService navigationService)
+        public ChangePasswordViewModel(IUserService userService, UserSessionStore userSessionStore, INavigationService navigationService)
         {
             _userService = userService;
             _userSessionStore = userSessionStore;
             _navigationService = navigationService;
 
             ChangePasswordCommand = new RelayCommand<object>(async _ => await ChangePassword());
+            CancelCommand = new RelayCommand<object>(_ => Cancel());
         }
 
         private async Task ChangePassword()
         {
             StatusMessage = string.Empty;
-
-            if (string.IsNullOrWhiteSpace(CurrentPassword) ||
-                string.IsNullOrWhiteSpace(NewPassword) ||
-                string.IsNullOrWhiteSpace(ConfirmPassword))
-            {
-                StatusMessage = "모든 항목을 입력해주세요.";
-                return;
-            }
 
             if (NewPassword != ConfirmPassword)
             {
@@ -115,23 +114,42 @@ namespace ERP_Project.ViewModels
                     CurrentPassword,
                     NewPassword);
 
-                if (result)
+                switch (result)
                 {
-                    StatusMessage = "비밀번호가 성공적으로 변경되었습니다.";
+                    case "SUCCESS":
+                        StatusMessage = "비밀번호가 성공적으로 변경되었습니다.";
 
-                    // 변경 후 대시보드 이동
-                    await Task.Delay(1000);
-                    _navigationService.Navigate(NaviType.DashboardView);
+                        await Task.Delay(800);
+                        _navigationService.Navigate(NaviType.CurrentStockView);
+                        break;
+
+                    case "INVALID_PASSWORD":
+                        StatusMessage = "현재 비밀번호가 올바르지 않습니다.";
+                        break;
+
+                    case "SAME_PASSWORD":
+                        StatusMessage = "기존 비밀번호와 동일한 비밀번호는 사용할 수 없습니다.";
+                        break;
+
+                    case "NOT_FOUND":
+                        StatusMessage = "사용자를 찾을 수 없습니다.";
+                        break;
+
+                    default:
+                        StatusMessage = "비밀번호 변경에 실패했습니다.";
+                        break;
                 }
-                else
-                {
-                    StatusMessage = "현재 비밀번호가 올바르지 않습니다.";
-                }
+
             }
             catch (Exception ex)
             {
-                StatusMessage = $"비밀번호 변경 중 오류 발생: {ex.Message}";
+                StatusMessage = $"오류 발생: {ex.Message}";
             }
+        }
+
+        private void Cancel()
+        {
+            _navigationService.Navigate(NaviType.CurrentStockView);
         }
     }
 }
